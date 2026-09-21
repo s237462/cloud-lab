@@ -5,6 +5,18 @@ require("dotenv").config();
 
 const app = express();
 
+// Cho phép Frontend React kết nối với Backend
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+    }
+
+    next();
+});
 
 // Cho phép server đọc dữ liệu JSON
 app.use(express.json());
@@ -17,6 +29,7 @@ app.get("/api/hello", (req, res) => {
 app.get("/api/students", async (req, res) => {
     try {
         const students = await Student.find();
+
         res.json(students);
     } catch (error) {
         res.status(500).json({
@@ -29,6 +42,7 @@ app.get("/api/students", async (req, res) => {
 app.post("/api/students", async (req, res) => {
     try {
         const student = await Student.create(req.body);
+
         res.status(201).json(student);
     } catch (error) {
         res.status(400).json({
