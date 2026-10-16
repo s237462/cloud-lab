@@ -5,6 +5,7 @@ services:
       - "5000:5000"
     environment:
       MONGODB_URI: ${MONGODB_URI}
+      CLIENT_URL: ${CLIENT_URL}
 
   frontend:
     image: khiem237462/mern-frontend:1.0
