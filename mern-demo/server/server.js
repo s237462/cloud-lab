@@ -6,17 +6,30 @@ require("dotenv").config();
 const app = express();
 
 // Cho phép Frontend React kết nối với Backend
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
+// Cấu hình CORS cho môi trường Production
+const cors = require("cors");
 
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(200);
-    }
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    "http://localhost:5173",
+    "http://localhost:4173",
+    "http://localhost:3000"
+].filter(Boolean);
 
-    next();
-});
+app.use(cors({
+    origin: function (origin, callback) {
+        if (
+            !origin ||
+            allowedOrigins.includes(origin) ||
+            process.env.NODE_ENV !== "production"
+        ) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("Origin không được phép bởi CORS"));
+    },
+    credentials: true
+}));
 
 // Cho phép server đọc dữ liệu JSON
 app.use(express.json());

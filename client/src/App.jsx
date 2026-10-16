@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+const API_URL = "https://mern-backend-s237462.onrender.com";
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -20,7 +21,7 @@ function App() {
   async function getStudents() {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/students"
+        `${API_URL}/api/students`
       );
 
       const data = await response.json();
@@ -36,7 +37,7 @@ function App() {
   async function addStudent() {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/students",
+        `${API_URL}/api/students`,
         {
           method: "POST",
 
@@ -80,7 +81,7 @@ function App() {
   async function updateStudent() {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/students/${editingId}`,
+        `${API_URL}/api/students/${editingId}`,
         {
           method: "PUT",
 
@@ -139,7 +140,7 @@ function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/students/${id}`,
+        `${API_URL}/api/students/${id}`,
         {
           method: "DELETE",
         }
